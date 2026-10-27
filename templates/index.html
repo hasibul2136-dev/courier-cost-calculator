@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aman Graphics & Designs Ltd. - Dynamic Courier Cost Calculator</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%20width=%22100%22%20height=%22100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#eff6ff',
+              100: '#dbeafe',
+              500: '#3b82f6',
+              600: '#2563eb',
+              700: '#1d4ed8',
+              800: '#1e40af',
+              900: '#1e3a8a',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-gradient-to-r from-blue-950 via-indigo-900 to-slate-900 text-white shadow-lg sticky top-0 z-40 border-b border-blue-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex items-center space-x-3">
+        <div class="bg-blue-600 p-2.5 rounded-xl shadow-md text-white flex items-center justify-center">
+          <i class="fa-solid fa-cube text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-xl font-extrabold tracking-tight text-white uppercase">Aman Graphics and Designs Ltd.</h1>
+            <span class="bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 text-xs font-semibold px-2 py-0.5 rounded-full">Dynamic Realtime</span>
+          </div>
+          <p class="text-xs text-blue-200">International Courier Cost & Work Order (WO) Pricing Tool</p>
+        </div>
+      </div>
+
+      <!-- Live Exchange Rate & Actions -->
+      <div class="flex items-center flex-wrap gap-2.5">
+        <!-- Live Exchange Rate Badge -->
+        <div class="bg-white/10 hover:bg-white/15 backdrop-blur-md border border-white/20 rounded-xl px-3.5 py-1.5 flex items-center gap-2.5 transition">
+          <i class="fa-solid fa-coins text-amber-400"></i>
+          <div>
+            <div class="text-[10px] text-blue-200 uppercase tracking-wider font-semibold">USD / BDT Rate</div>
+            <div class="text-sm font-bold text-white flex items-center gap-1.5">
+              <span>$1 = <span id="headerExchangeRate">৳ 123.83</span></span>
+              <button onclick="refreshExchangeRate()" title="Refresh live rate" class="text-blue-200 hover:text-white transition">
+                <i id="refreshRateIcon" class="fa-solid fa-rotate-right text-xs"></i>
+              </button>
+              <button onclick="openExchangeModal()" title="Edit custom rate" class="text-blue-300 hover:text-amber-300 transition text-xs">
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sync to Excel Button -->
+        <button onclick="syncToDesktopExcel()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-sm transition" title="Sync latest rates to All Courrier Cost Calculation.xlsx">
+          <i class="fa-solid fa-file-excel"></i>
+          <span>Sync to Desktop Excel</span>
+        </button>
+
+        <!-- Manage Rates Button -->
+        <button onclick="openRatesModal()" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3.5 py-2 rounded-xl flex items-center gap-1.5 shadow-sm transition">
+          <i class="fa-solid fa-sliders"></i>
+          <span>Manage Rate Cards</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Toast -->
+  <div id="toastContainer" class="fixed top-16 right-4 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- Main Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 w-full">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- LEFT COLUMN: Shipment Route, Weight & Settings -->
+      <div class="lg:col-span-5 space-y-5">
+        
+        <!-- FROM & TO LOCATION CARD -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
+          <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 gap-2">
+            <div class="flex items-center gap-2">
+              <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-route text-blue-600"></i>
+                Shipment Route (From & To)
+              </h2>
+            </div>
+            
+            <!-- Quick Route Mode Toggle & Zone Badge -->
+            <div class="flex items-center gap-2">
+              <div class="inline-flex rounded-lg bg-slate-100 p-0.5 border border-slate-200 text-[11px] font-bold">
+                <button type="button" id="btnModeImport" onclick="setRouteDirection('import')" class="px-2.5 py-1 rounded-md transition bg-blue-600 text-white shadow-sm flex items-center gap-1">
+                  <i class="fa-solid fa-arrow-down-long"></i> Inbound Import
+                </button>
+                <button type="button" id="btnModeExport" onclick="setRouteDirection('export')" class="px-2.5 py-1 rounded-md transition text-slate-600 hover:text-blue-700 flex items-center gap-1">
+                  <i class="fa-solid fa-arrow-up-long"></i> Outbound Export
+                </button>
+              </div>
+              <span id="routeZoneBadge" class="text-[11px] bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full font-bold">
+                Far East Zone
+              </span>
+            </div>
+          </div>
+
+          <!-- ORIGIN (FROM LOCATION) -->
+          <div class="space-y-2">
+            <div class="flex justify-between items-center">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-location-dot text-emerald-600"></i> Origin (From Location)
+              </label>
+              <span class="text-[10px] text-slate-400 font-medium" id="originRoleLabel">Supplier / Shipper</span>
+            </div>
+
+            <!-- Origin Quick Preset Pills -->
+            <div class="flex flex-wrap gap-1.5" id="originQuickPills">
+              <button type="button" onclick="selectOrigin('China', 'Guangzhou / Shanghai / Ningbo', 'china_hk')" class="origin-pill active text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-blue-600 text-white border-blue-600">
+                <span>🇨🇳</span> China
+              </button>
+              <button type="button" onclick="selectOrigin('Hong Kong', 'Hong Kong SAR', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇭🇰</span> Hong Kong
+              </button>
+              <button type="button" onclick="selectOrigin('India', 'Delhi / Mumbai / Surat', 'south_asia_middle_east')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇮🇳</span> India
+              </button>
+              <button type="button" onclick="selectOrigin('Taiwan', 'Taipei', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇹🇼</span> Taiwan
+              </button>
+              <button type="button" onclick="selectOrigin('Vietnam', 'Hanoi / HCMC', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇻🇳</span> Vietnam
+              </button>
+              <button type="button" onclick="selectOrigin('Turkey', 'Istanbul', 'south_asia_middle_east')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇹🇷</span> Turkey
+              </button>
+              <button type="button" onclick="selectOrigin('BD Factory', 'Gazipur (Aman Graphics & Designs Ltd)', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🏭</span> BD Factory
+              </button>
+              <button type="button" onclick="selectOrigin('BD HO', 'Dhaka (Aman Graphics & Designs Ltd)', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🏢</span> BD HO
+              </button>
+              <button type="button" onclick="selectOrigin('Other', 'Custom Origin Address', 'rest_of_world')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🌏</span> Other
+              </button>
+            </div>
+
+            <!-- Origin Text Input -->
+            <div class="relative">
+              <input type="text" id="inputOrigin" value="China (Guangzhou / Shanghai / Ningbo)"
+                class="w-full text-xs font-bold text-slate-900 bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-3.5 py-2.5 outline-none transition"
+                placeholder="Origin country, city, supplier address..."
+                oninput="triggerCalculation()">
+            </div>
+          </div>
+
+          <!-- Swap Route Button Divider -->
+          <div class="relative flex py-1 items-center justify-center">
+            <div class="flex-grow border-t border-slate-200"></div>
+            <button type="button" onclick="swapRoute()" class="flex-shrink mx-2 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 border border-blue-200 px-3 py-1 rounded-full shadow-sm flex items-center gap-1.5 transition">
+              <i class="fa-solid fa-arrows-up-down text-blue-600"></i>
+              <span>Swap Route (Inbound ⇄ Outbound)</span>
+            </button>
+            <div class="flex-grow border-t border-slate-200"></div>
+          </div>
+
+          <!-- DESTINATION (TO LOCATION) -->
+          <div class="space-y-2.5">
+            <div class="flex justify-between items-center">
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                <i class="fa-solid fa-plane-arrival text-rose-600"></i> Destination (To Location)
+              </label>
+              <span class="text-[10px] text-slate-400 font-medium" id="destRoleLabel">Factory Consignee</span>
+            </div>
+
+            <!-- BUYER ACCOUNTS PRESETS SECTION -->
+            <div class="bg-indigo-50/60 p-2.5 rounded-xl border border-indigo-100 space-y-1.5">
+              <div class="flex justify-between items-center">
+                <span class="text-[11px] font-extrabold uppercase tracking-wider text-indigo-950 flex items-center gap-1">
+                  <i class="fa-solid fa-tags text-indigo-600"></i> Retail Buyer Presets (Aman Graphics Accounts)
+                </span>
+                <span class="text-[10px] text-indigo-700 font-semibold" id="activeBuyerNotice">Click buyer to set destination</span>
+              </div>
+              
+              <!-- Buyer Pills Grid -->
+              <div class="flex flex-wrap gap-1.5" id="buyerPillsContainer">
+                <!-- UK Buyers -->
+                <button type="button" onclick="selectBuyer('Tesco', 'Welwyn Garden City, Hertfordshire, UK', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Tesco Stores Ltd - UK">
+                  <span>🇬🇧</span> TESCO
+                </button>
+                <button type="button" onclick="selectBuyer('Marks & Spencer (M&S)', 'Waterside House, London, UK', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Marks & Spencer - UK">
+                  <span>🇬🇧</span> M&S
+                </button>
+                <button type="button" onclick="selectBuyer('Next', 'Desford Road, Enderby, Leicester, UK', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Next Retail Ltd - UK">
+                  <span>🇬🇧</span> next
+                </button>
+                <button type="button" onclick="selectBuyer('John Lewis & Partners', '171 Victoria Street, London, UK', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="John Lewis & Partners - UK">
+                  <span>🇬🇧</span> John Lewis
+                </button>
+                <button type="button" onclick="selectBuyer('Sainsbury\'s (Tu Clothing)', '33 Holborn, London, UK', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Sainsbury's - UK">
+                  <span>🇬🇧</span> Sainsbury's
+                </button>
+                
+                <!-- USA Buyers -->
+                <button type="button" onclick="selectBuyer('Target Corporation', 'Minneapolis, MN, USA', 'usa_canada')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Target Corporation - USA">
+                  <span>🇺🇸</span> TARGET
+                </button>
+                <button type="button" onclick="selectBuyer('Carter\'s Inc.', 'Atlanta, GA, USA', 'usa_canada')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Carter's Inc. - USA">
+                  <span>🇺🇸</span> carter's
+                </button>
+
+                <!-- Australia Buyers -->
+                <button type="button" onclick="selectBuyer('Kmart Australia Ltd', 'Mulgrave, Melbourne, Victoria, Australia', 'australia_oceania')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Kmart Australia">
+                  <span>🇦🇺</span> Kmart
+                </button>
+                <button type="button" onclick="selectBuyer('BIG W (Woolworths Group)', 'Bella Vista, Sydney, Australia', 'australia_oceania')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="BIG W - Australia">
+                  <span>🇦🇺</span> BIG W
+                </button>
+                <button type="button" onclick="selectBuyer('Myer Pty Ltd', 'Docklands, Melbourne, Australia', 'australia_oceania')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Myer - Australia">
+                  <span>🇦🇺</span> MYER
+                </button>
+
+                <!-- Europe (Spain & France) Buyers -->
+                <button type="button" onclick="selectBuyer('Mango (Punto Fa, S.L.)', 'Palau-solità i Plegamans, Barcelona, Spain', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Mango - Spain">
+                  <span>🇪🇸</span> MANGO
+                </button>
+                <button type="button" onclick="selectBuyer('Monoprix S.A.', 'Clichy / Paris, France', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Monoprix - France">
+                  <span>🇫🇷</span> MONOPRIX
+                </button>
+                <button type="button" onclick="selectBuyer('ÏDKIDS (Okaïdi / Obaïbi)', 'Roubaix / Paris, France', 'europe_uk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="ÏDKIDS - France">
+                  <span>🇫🇷</span> ÏDKIDS
+                </button>
+
+                <!-- Turkey & Middle East Buyers -->
+                <button type="button" onclick="selectBuyer('LC Waikiki Mağazacılık', 'Bağcılar, Istanbul, Turkey', 'south_asia_middle_east')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="LC Waikiki - Turkey">
+                  <span>🇹🇷</span> LC WAIKIKI
+                </button>
+                <button type="button" onclick="selectBuyer('Max Fashion (Landmark Group)', 'Dubai Marina, Dubai, UAE', 'south_asia_middle_east')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Max Fashion - UAE">
+                  <span>🇦🇪</span> max
+                </button>
+                <button type="button" onclick="selectBuyer('Babyshop (Landmark Group)', 'Landmark Group HQ, Dubai, UAE', 'south_asia_middle_east')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Babyshop - UAE">
+                  <span>🇦🇪</span> babyshop
+                </button>
+
+                <!-- Japan / Asia Buyer -->
+                <button type="button" onclick="selectBuyer('Kowa Company, Ltd.', 'Chuo-ku, Tokyo, Japan', 'china_hk')" class="buyer-pill text-xs px-2.5 py-1 rounded-lg border font-bold transition flex items-center gap-1 bg-white hover:bg-indigo-600 hover:text-white text-slate-800 border-slate-200 shadow-sm" title="Kowa Company - Japan">
+                  <span>🇯🇵</span> Kowa
+                </button>
+              </div>
+            </div>
+
+            <!-- Destination Quick Preset Country Pills -->
+            <div class="flex flex-wrap gap-1.5" id="destinationQuickPills">
+              <button type="button" onclick="selectDestination('BD Factory', 'Gazipur (Aman Graphics & Designs Ltd)', 'china_hk')" class="dest-pill active text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-blue-600 text-white border-blue-600">
+                <span>🏭</span> BD Factory
+              </button>
+              <button type="button" onclick="selectDestination('BD HO', 'Dhaka (Aman Graphics & Designs Ltd)', 'china_hk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🏢</span> BD HO
+              </button>
+              <button type="button" onclick="selectDestination('China', 'Guangzhou / Shanghai / Ningbo', 'china_hk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇨🇳</span> China
+              </button>
+              <button type="button" onclick="selectDestination('Hong Kong', 'Hong Kong SAR', 'china_hk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇭🇰</span> Hong Kong
+              </button>
+              <button type="button" onclick="selectDestination('United States', 'New York / Los Angeles / Dallas', 'usa_canada')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇺🇸</span> USA
+              </button>
+              <button type="button" onclick="selectDestination('United Kingdom', 'London / Manchester', 'europe_uk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇬🇧</span> UK
+              </button>
+              <button type="button" onclick="selectDestination('Australia', 'Melbourne / Sydney', 'australia_oceania')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇦🇺</span> Australia
+              </button>
+              <button type="button" onclick="selectDestination('Germany', 'Frankfurt / Hamburg / Munich', 'europe_uk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇩🇪</span> Germany
+              </button>
+              <button type="button" onclick="selectDestination('Spain', 'A Coruña / Madrid / Barcelona (Inditex)', 'europe_uk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇪🇸</span> Spain
+              </button>
+              <button type="button" onclick="selectDestination('Turkey', 'Istanbul', 'south_asia_middle_east')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🇹🇷</span> Turkey
+              </button>
+              <button type="button" onclick="selectDestination('Other', 'International Destination', 'rest_of_world')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+                <span>🌏</span> Other
+              </button>
+            </div>
+
+            <!-- Destination Text Details Input -->
+            <div class="relative">
+              <input type="text" id="inputDestination" value="Gazipur, Bangladesh (Aman Graphics & Designs Ltd - Factory)"
+                class="w-full text-xs font-bold text-slate-900 bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-3.5 py-2.5 outline-none transition"
+                placeholder="Destination city, factory address or buyer consignee..."
+                oninput="triggerCalculation()">
+            </div>
+
+            <!-- Tariff Zone Selector Dropdown -->
+            <div class="flex items-center justify-between text-xs pt-1">
+              <span class="text-slate-500 font-medium">Applied Tariff Zone:</span>
+              <select id="selectTariffZone" onchange="handleZoneChange()" class="text-xs font-bold text-blue-800 bg-blue-50 border border-blue-200 rounded-lg px-2 py-1 outline-none">
+                <option value="china_hk">China & Hong Kong (Far East)</option>
+                <option value="usa_canada">USA & North America</option>
+                <option value="europe_uk">Europe & United Kingdom</option>
+                <option value="australia_oceania">Australia & Oceania (Kmart, Big W, Myer)</option>
+                <option value="south_asia_middle_east">South Asia & Middle East</option>
+                <option value="rest_of_world">Rest of the World (Other)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- WEIGHT & DIMENSIONS CARD -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
+          <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+            <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-weight-scale text-blue-600"></i>
+              Shipment Weight & Dimensions
+            </h2>
+            <span class="text-xs bg-blue-50 text-blue-700 px-2.5 py-1 rounded-full font-medium">Auto-calculates</span>
+          </div>
+
+          <!-- Weight Input -->
+          <div class="space-y-2">
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+              Actual Weight (Kg) <span class="text-red-500">*</span>
+            </label>
+            <div class="relative">
+              <input type="number" id="inputWeight" step="0.1" min="0.1" value="3.0"
+                class="w-full text-2xl font-bold text-slate-900 bg-slate-50 border-2 border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-4 py-2.5 outline-none transition"
+                oninput="triggerCalculation()">
+              <div class="absolute right-3 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">KG</div>
+            </div>
+
+            <!-- Quick Presets -->
+            <div class="flex flex-wrap gap-1.5 pt-1">
+              <span class="text-[11px] text-slate-400 self-center mr-1">Presets:</span>
+              <button onclick="setWeight(0.5)" class="text-xs px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-blue-100 hover:text-blue-700 font-medium text-slate-600 transition">0.5</button>
+              <button onclick="setWeight(1.0)" class="text-xs px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-blue-100 hover:text-blue-700 font-medium text-slate-600 transition">1.0</button>
+              <button onclick="setWeight(3.0)" class="text-xs px-2 py-0.5 rounded-lg bg-blue-100 text-blue-700 font-bold transition">3.0</button>
+              <button onclick="setWeight(5.0)" class="text-xs px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-blue-100 hover:text-blue-700 font-medium text-slate-600 transition">5.0</button>
+              <button onclick="setWeight(15.0)" class="text-xs px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-blue-100 hover:text-blue-700 font-medium text-slate-600 transition">15</button>
+              <button onclick="setWeight(25.0)" class="text-xs px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-blue-100 hover:text-blue-700 font-medium text-slate-600 transition">25</button>
+              <button onclick="setWeight(60.0)" class="text-xs px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-blue-100 hover:text-blue-700 font-medium text-slate-600 transition">60</button>
+              <button onclick="setWeight(110.0)" class="text-xs px-2 py-0.5 rounded-lg bg-slate-100 hover:bg-blue-100 hover:text-blue-700 font-medium text-slate-600 transition">110</button>
+            </div>
+          </div>
+
+          <!-- Volumetric Dimensions -->
+          <div class="pt-3 border-t border-slate-100">
+            <button type="button" onclick="toggleDimensions()" class="w-full flex justify-between items-center text-xs font-semibold text-slate-700 hover:text-blue-600 transition">
+              <span class="flex items-center gap-1.5">
+                <i class="fa-solid fa-box text-slate-400"></i>
+                Dimensions & Volumetric Weight (Optional)
+              </span>
+              <i id="dimChevron" class="fa-solid fa-chevron-down text-slate-400 text-xs transition-transform"></i>
+            </button>
+
+            <div id="dimensionsPanel" class="hidden mt-3 space-y-2 bg-slate-50 p-3 rounded-xl border border-slate-200/60">
+              <div class="grid grid-cols-3 gap-2">
+                <div>
+                  <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Length (cm)</label>
+                  <input type="number" id="inputLength" min="0" placeholder="0" class="w-full text-sm font-semibold bg-white border border-slate-200 rounded-lg p-2 outline-none focus:border-blue-500" oninput="triggerCalculation()">
+                </div>
+                <div>
+                  <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Width (cm)</label>
+                  <input type="number" id="inputWidth" min="0" placeholder="0" class="w-full text-sm font-semibold bg-white border border-slate-200 rounded-lg p-2 outline-none focus:border-blue-500" oninput="triggerCalculation()">
+                </div>
+                <div>
+                  <label class="block text-[10px] uppercase font-bold text-slate-500 mb-1">Height (cm)</label>
+                  <input type="number" id="inputHeight" min="0" placeholder="0" class="w-full text-sm font-semibold bg-white border border-slate-200 rounded-lg p-2 outline-none focus:border-blue-500" oninput="triggerCalculation()">
+                </div>
+              </div>
+              <div class="flex justify-between items-center text-xs text-slate-500 pt-1 border-t border-slate-200/60">
+                <span>Volumetric: <strong id="volWeightDisplay" class="text-slate-800">0.00 Kg</strong></span>
+                <span class="text-[10px] text-slate-400">(L×W×H / 5000)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chargeable Weight Summary Badge -->
+          <div id="chargeableBadge" class="p-3 bg-blue-50/70 rounded-xl border border-blue-200/60 flex items-center justify-between">
+            <div>
+              <div class="text-[11px] font-semibold text-blue-800 uppercase tracking-wider">Chargeable Weight</div>
+              <div class="text-lg font-black text-blue-950" id="chargeableWeightDisplay">3.00 Kg</div>
+            </div>
+            <div id="tierNameBadge" class="text-right">
+              <span class="inline-block bg-blue-200 text-blue-900 text-xs font-bold px-2.5 py-1 rounded-lg">
+                Sample Tier (≤ 10 Kg)
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SURCHARGES & DISPLAY SETTINGS -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
+          <h2 class="text-base font-bold text-slate-800 flex items-center gap-2 pb-2 border-b border-slate-100">
+            <i class="fa-solid fa-receipt text-blue-600"></i>
+            Additional Surcharges & View
+          </h2>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-sm font-bold text-slate-700">Fuel Surcharge</div>
+              <div class="text-xs text-slate-400">Apply carrier fuel index %</div>
+            </div>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="toggleFuel" class="sr-only peer" checked onchange="triggerCalculation()">
+              <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+
+          <div class="space-y-1">
+            <div class="flex justify-between items-center">
+              <label class="text-xs font-semibold text-slate-600">Documentation / Handling Fee ($)</label>
+              <span class="text-[11px] text-slate-400">Excel +$10 doc charge</span>
+            </div>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400">$</span>
+              <input type="number" id="inputHandlingFee" step="1" value="10.0"
+                class="w-full pl-8 pr-4 py-2 text-sm font-bold bg-slate-50 border border-slate-200 rounded-xl focus:border-blue-500 focus:bg-white outline-none transition"
+                oninput="triggerCalculation()">
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            <label class="text-xs font-semibold text-slate-600">Courier Filter</label>
+            <select id="selectCourierFilter" onchange="triggerCalculation()"
+              class="w-full text-sm font-bold text-slate-700 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2.5 outline-none focus:border-blue-500">
+              <option value="ALL">⭐ All Couriers (Compare & Find Lowest Rate)</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Real-Time Results & Comparison -->
+      <div class="lg:col-span-7 space-y-5">
+        
+        <!-- BEST CHOICE RECOMMENDATION BANNER -->
+        <div id="cheapestBanner" class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white rounded-2xl p-5 shadow-md flex flex-wrap justify-between items-center gap-4 transition-all">
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="bg-white/20 backdrop-blur-sm text-white text-[11px] font-black uppercase tracking-wider px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                <i class="fa-solid fa-crown text-amber-300"></i> Best / Lowest Cost Option
+              </span>
+              <span id="bestCourierName" class="text-lg font-bold text-white">Fardar Express</span>
+            </div>
+            <p id="savingsNotice" class="text-xs text-emerald-100">Most economical choice for this route & weight category.</p>
+          </div>
+
+          <div class="flex items-center gap-4 bg-white/10 backdrop-blur-sm px-4 py-2.5 rounded-xl border border-white/20">
+            <div>
+              <div class="text-[10px] uppercase font-bold text-emerald-200">Total Required Value</div>
+              <div class="text-2xl font-black text-white" id="bestTotalUsd">$26.00</div>
+              <div class="text-xs font-semibold text-emerald-200" id="bestTotalBdt">৳ 3,219.58</div>
+            </div>
+            <div class="h-10 w-px bg-white/20"></div>
+            <div>
+              <div class="text-[10px] uppercase font-bold text-amber-300">Per Kg Value for WO</div>
+              <div class="text-2xl font-black text-amber-300" id="bestPerKgUsd">$8.67</div>
+              <div class="text-xs font-semibold text-emerald-200" id="bestPerKgBdt">৳ 1,073.19 / Kg</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- COURIER COMPARISON TABLE -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200/80 overflow-hidden">
+          <div class="p-4 sm:p-5 border-b border-slate-100 flex flex-wrap justify-between items-center gap-3">
+            <div>
+              <h2 class="text-base font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-chart-column text-blue-600"></i>
+                Real-Time Courier Comparison
+              </h2>
+              <p class="text-xs text-slate-400" id="comparisonRouteSubhead">Route: Dhaka → China</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="copyQuickComparison()" class="text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg flex items-center gap-1.5 transition">
+                <i class="fa-regular fa-copy"></i>
+                <span>Copy Comparison</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quotes Table -->
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm" id="quotesTable">
+              <thead class="bg-slate-50 text-slate-500 uppercase text-[11px] font-bold tracking-wider border-b border-slate-200">
+                <tr>
+                  <th class="py-3 px-3 text-center">Rank</th>
+                  <th class="py-3 px-3">Courier</th>
+                  <th class="py-3 px-3">Base Freight</th>
+                  <th class="py-3 px-3">Fuel</th>
+                  <th class="py-3 px-3">Doc</th>
+                  <th class="py-3 px-3 text-right">Total Req. Value</th>
+                  <th class="py-3 px-3 text-right bg-blue-50/50 text-blue-900">Per Kg for WO</th>
+                  <th class="py-3 px-3 text-center">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="quotesTableBody" class="divide-y divide-slate-100 font-medium">
+                <!-- Dynamically populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- WORK ORDER SUMMARY & EXPORT BOX -->
+        <div id="woSummaryBox" class="bg-white rounded-2xl shadow-sm border border-slate-200/80 p-5 space-y-4">
+          <div class="flex flex-wrap justify-between items-center gap-2 pb-3 border-b border-slate-100">
+            <div>
+              <h3 class="text-sm font-bold text-slate-800 flex items-center gap-2">
+                <i class="fa-solid fa-clipboard-check text-blue-600"></i>
+                Aman Graphics & Designs Ltd. - Work Order (WO) Ready Text
+              </h3>
+              <p class="text-xs text-slate-400">Includes Route (From & To), Weight, Breakdown, and WO Rates</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="copyWorkOrderText()" class="text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+                <i class="fa-regular fa-clone"></i>
+                <span>Copy WO Text</span>
+              </button>
+              <button onclick="downloadExcelQuote()" class="text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white px-3.5 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition">
+                <i class="fa-solid fa-file-arrow-down"></i>
+                <span>Download Excel Sheet</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="relative">
+            <textarea id="woFormattedText" readonly rows="7"
+              class="w-full font-mono text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none resize-none select-all focus:bg-white"></textarea>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs text-slate-400 flex flex-wrap justify-between items-center gap-2">
+      <div>AMAN GRAPHICS AND DESIGNS LTD. © Dynamic Courier Cost Calculator • Replaces static Excel calculation</div>
+      <div class="flex items-center gap-3">
+        <span>Formula: Tiered Weight + Fuel Surcharge + Handling</span>
+        <span>•</span>
+        <span id="footerStatus" class="text-emerald-600 font-semibold flex items-center gap-1"><i class="fa-solid fa-circle text-[8px]"></i> System Live</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MODAL: MANAGE RATE CARDS & SURCHARGES -->
+  <div id="ratesModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-5xl w-full max-h-[90vh] flex flex-col border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 bg-gradient-to-r from-blue-950 to-indigo-900 text-white flex justify-between items-center">
+        <div>
+          <h3 class="text-lg font-bold">Manage Rate Cards & Fuel Surcharges</h3>
+          <p class="text-xs text-blue-200">Aman Graphics and Designs Ltd. • Edit courier rates per destination zone</p>
+        </div>
+        <button onclick="closeRatesModal()" class="text-blue-200 hover:text-white transition text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="p-6 overflow-y-auto space-y-5 flex-1">
+        <div class="flex flex-wrap justify-between items-center gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200">
+          <div class="flex items-center gap-2">
+            <label class="text-xs font-bold text-slate-700">Select Zone to Edit:</label>
+            <select id="modalZoneSelect" onchange="renderRatesEditorTable()" class="text-xs font-bold text-blue-900 bg-white border border-slate-300 rounded-lg px-2.5 py-1.5 outline-none">
+              <option value="china_hk">🇨🇳 🇭🇰 China & Hong Kong (Far East)</option>
+              <option value="usa_canada">🇺🇸 🇨🇦 USA & North America</option>
+              <option value="europe_uk">🇬🇧 🇩🇪 🇪🇸 Europe & United Kingdom</option>
+              <option value="australia_oceania">🇦🇺 Australia & Oceania (Kmart, Big W, Myer)</option>
+              <option value="south_asia_middle_east">🇮🇳 🇦🇪 🇹🇷 South Asia & Middle East</option>
+              <option value="rest_of_world">🌏 Rest of the World (Other)</option>
+            </select>
+          </div>
+          <button onclick="addNewCourierPrompt()" class="text-xs font-bold bg-blue-100 hover:bg-blue-200 text-blue-800 px-3 py-1.5 rounded-lg flex items-center gap-1 transition">
+            <i class="fa-solid fa-plus"></i> Add New Courier to this Zone
+          </button>
+        </div>
+
+        <!-- Rates Editor Table -->
+        <div class="overflow-x-auto border border-slate-200 rounded-xl">
+          <table class="w-full text-xs text-left">
+            <thead class="bg-slate-100 text-slate-700 font-bold uppercase tracking-wider">
+              <tr>
+                <th class="py-2.5 px-3">Courier</th>
+                <th class="py-2.5 px-2">1st Half<br>(≤0.5kg)</th>
+                <th class="py-2.5 px-2">2nd Half<br>(+0.5kg)</th>
+                <th class="py-2.5 px-2">11-20 Kg<br>(/Kg)</th>
+                <th class="py-2.5 px-2">21-50 Kg<br>(/Kg)</th>
+                <th class="py-2.5 px-2">51-100 Kg<br>(/Kg)</th>
+                <th class="py-2.5 px-2">>100 Kg<br>(/Kg)</th>
+                <th class="py-2.5 px-2">Fuel %</th>
+                <th class="py-2.5 px-2">Doc Fee</th>
+                <th class="py-2.5 px-2 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="ratesEditorTableBody" class="divide-y divide-slate-200">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-3.5 bg-slate-50 border-t border-slate-200 flex justify-between items-center">
+        <button onclick="resetDefaultRates()" class="text-xs text-rose-600 hover:text-rose-800 font-bold transition">
+          Reset Active Zone to Factory Defaults
+        </button>
+        <div class="flex items-center gap-3">
+          <button onclick="closeRatesModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl transition">
+            Cancel
+          </button>
+          <button onclick="saveAllRatesFromModal()" class="px-5 py-2 text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow transition">
+            Save All Rate Changes
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: CUSTOM EXCHANGE RATE -->
+  <div id="exchangeModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 border border-slate-200">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-base font-bold text-slate-800 flex items-center gap-2">
+          <i class="fa-solid fa-coins text-amber-500"></i>
+          USD to BDT Exchange Rate
+        </h3>
+        <button onclick="closeExchangeModal()" class="text-slate-400 hover:text-slate-600">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+
+      <p class="text-xs text-slate-500 mb-4">
+        Set custom banking / accounting rate for this month's Work Orders at Aman Graphics and Designs Ltd.
+      </p>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Exchange Rate (1 USD in BDT)</label>
+          <div class="relative">
+            <span class="absolute left-3 top-1/2 -translate-y-1/2 font-bold text-slate-400">৳</span>
+            <input type="number" id="customExchangeInput" step="0.01" class="w-full pl-8 pr-4 py-2.5 text-base font-bold bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:bg-white">
+          </div>
+        </div>
+
+        <div class="flex gap-2">
+          <button onclick="setLiveExchangeRate()" class="flex-1 text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 py-2.5 rounded-xl transition">
+            Use Live Market Rate
+          </button>
+          <button onclick="saveCustomExchangeRate()" class="flex-1 text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white py-2.5 rounded-xl shadow transition">
+            Apply Rate
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

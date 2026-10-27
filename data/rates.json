@@ -1,0 +1,633 @@
+{
+  "settings": {
+    "company_name": "AMAN GRAPHICS AND DESIGNS LTD.",
+    "currency_base": "USD",
+    "currency_target": "BDT",
+    "exchange_rate": 123.83,
+    "last_exchange_update": "2026-10-27T11:45:00",
+    "auto_fetch_exchange": true,
+    "default_handling_fee": 10.0,
+    "apply_fuel_surcharge": true,
+    "default_origin": "China (Guangzhou / Shanghai / Ningbo)",
+    "default_destination": "Gazipur, Bangladesh (Aman Graphics & Designs Ltd - Factory)",
+    "default_zone": "china_hk"
+  },
+  "buyers_catalog": [
+    {
+      "id": "tesco",
+      "name": "Tesco Stores Ltd",
+      "short_name": "Tesco",
+      "country": "United Kingdom",
+      "city": "Welwyn Garden City, Hertfordshire, UK",
+      "zone": "europe_uk",
+      "flag": "🇬🇧",
+      "category": "UK"
+    },
+    {
+      "id": "ms",
+      "name": "Marks & Spencer (M&S)",
+      "short_name": "M&S",
+      "country": "United Kingdom",
+      "city": "Waterside House, London, UK",
+      "zone": "europe_uk",
+      "flag": "🇬🇧",
+      "category": "UK"
+    },
+    {
+      "id": "next",
+      "name": "Next Retail Ltd",
+      "short_name": "Next",
+      "country": "United Kingdom",
+      "city": "Desford Road, Enderby, Leicester, UK",
+      "zone": "europe_uk",
+      "flag": "🇬🇧",
+      "category": "UK"
+    },
+    {
+      "id": "john_lewis",
+      "name": "John Lewis & Partners",
+      "short_name": "John Lewis",
+      "country": "United Kingdom",
+      "city": "171 Victoria Street, London, UK",
+      "zone": "europe_uk",
+      "flag": "🇬🇧",
+      "category": "UK"
+    },
+    {
+      "id": "sainsburys",
+      "name": "Sainsbury's (Tu Clothing)",
+      "short_name": "Sainsbury's",
+      "country": "United Kingdom",
+      "city": "33 Holborn, London, UK",
+      "zone": "europe_uk",
+      "flag": "🇬🇧",
+      "category": "UK"
+    },
+    {
+      "id": "target_usa",
+      "name": "Target Corporation",
+      "short_name": "Target (USA)",
+      "country": "United States",
+      "city": "1000 Nicollet Mall, Minneapolis, MN, USA",
+      "zone": "usa_canada",
+      "flag": "🇺🇸",
+      "category": "USA"
+    },
+    {
+      "id": "carters",
+      "name": "Carter's Inc.",
+      "short_name": "Carter's",
+      "country": "United States",
+      "city": "3438 Peachtree Rd NE, Atlanta, GA, USA",
+      "zone": "usa_canada",
+      "flag": "🇺🇸",
+      "category": "USA"
+    },
+    {
+      "id": "mango",
+      "name": "Mango (Punto Fa, S.L.)",
+      "short_name": "Mango",
+      "country": "Spain",
+      "city": "Palau-solità i Plegamans, Barcelona, Spain",
+      "zone": "europe_uk",
+      "flag": "🇪🇸",
+      "category": "Europe"
+    },
+    {
+      "id": "monoprix",
+      "name": "Monoprix S.A.",
+      "short_name": "Monoprix",
+      "country": "France",
+      "city": "14-16 Rue Marc Bloch, Clichy / Paris, France",
+      "zone": "europe_uk",
+      "flag": "🇫🇷",
+      "category": "Europe"
+    },
+    {
+      "id": "idkids",
+      "name": "ÏDKIDS (Okaïdi / Obaïbi)",
+      "short_name": "ÏDKIDS",
+      "country": "France",
+      "city": "162 Boulevard de Fourmies, Roubaix, France",
+      "zone": "europe_uk",
+      "flag": "🇫🇷",
+      "category": "Europe"
+    },
+    {
+      "id": "kmart_aus",
+      "name": "Kmart Australia Ltd",
+      "short_name": "Kmart (Aus)",
+      "country": "Australia",
+      "city": "Mulgrave, Melbourne, Victoria, Australia",
+      "zone": "australia_oceania",
+      "flag": "🇦🇺",
+      "category": "Australia"
+    },
+    {
+      "id": "big_w",
+      "name": "BIG W (Woolworths Group)",
+      "short_name": "BIG W",
+      "country": "Australia",
+      "city": "1 Woolworths Way, Bella Vista, Sydney, Australia",
+      "zone": "australia_oceania",
+      "flag": "🇦🇺",
+      "category": "Australia"
+    },
+    {
+      "id": "myer",
+      "name": "Myer Pty Ltd",
+      "short_name": "Myer",
+      "country": "Australia",
+      "city": "800 Collins Street, Docklands, Melbourne, Australia",
+      "zone": "australia_oceania",
+      "flag": "🇦🇺",
+      "category": "Australia"
+    },
+    {
+      "id": "lc_waikiki",
+      "name": "LC Waikiki Mağazacılık",
+      "short_name": "LC Waikiki",
+      "country": "Turkey",
+      "city": "Evren Mah. Gülbahar Cad., Bağcılar, Istanbul, Turkey",
+      "zone": "south_asia_middle_east",
+      "flag": "🇹🇷",
+      "category": "Turkey & ME"
+    },
+    {
+      "id": "max_fashion",
+      "name": "Max Fashion (Landmark Group)",
+      "short_name": "Max Fashion",
+      "country": "United Arab Emirates",
+      "city": "Landmark Tower, Dubai Marina, Dubai, UAE",
+      "zone": "south_asia_middle_east",
+      "flag": "🇦🇪",
+      "category": "Turkey & ME"
+    },
+    {
+      "id": "babyshop",
+      "name": "Babyshop (Landmark Group)",
+      "short_name": "Babyshop",
+      "country": "United Arab Emirates",
+      "city": "Landmark Group HQ, Dubai, UAE",
+      "zone": "south_asia_middle_east",
+      "flag": "🇦🇪",
+      "category": "Turkey & ME"
+    },
+    {
+      "id": "kowa",
+      "name": "Kowa Company, Ltd.",
+      "short_name": "Kowa",
+      "country": "Japan",
+      "city": "3-4-14 Nihonbashi-Honcho, Chuo-ku, Tokyo, Japan",
+      "zone": "china_hk",
+      "flag": "🇯🇵",
+      "category": "Asia / Japan"
+    }
+  ],
+  "origins_catalog": [
+    {"country": "China", "city": "Guangzhou / Shanghai / Ningbo", "flag": "🇨🇳", "zone": "china_hk", "label": "China"},
+    {"country": "Hong Kong", "city": "Hong Kong SAR", "flag": "🇭🇰", "zone": "china_hk", "label": "Hong Kong"},
+    {"country": "India", "city": "Delhi / Mumbai / Surat", "flag": "🇮🇳", "zone": "south_asia_middle_east", "label": "India"},
+    {"country": "Taiwan", "city": "Taipei", "flag": "🇹🇼", "zone": "china_hk", "label": "Taiwan"},
+    {"country": "Vietnam", "city": "Hanoi / HCMC", "flag": "🇻🇳", "zone": "china_hk", "label": "Vietnam"},
+    {"country": "Turkey", "city": "Istanbul", "flag": "🇹🇷", "zone": "south_asia_middle_east", "label": "Turkey"},
+    {"country": "BD Factory", "city": "Gazipur (Aman Graphics & Designs Ltd)", "flag": "🏭", "zone": "china_hk", "label": "BD Factory"},
+    {"country": "BD HO", "city": "Dhaka (Aman Graphics & Designs Ltd)", "flag": "🏢", "zone": "china_hk", "label": "BD HO"},
+    {"country": "Other", "city": "Custom Origin", "flag": "🌏", "zone": "rest_of_world", "label": "Other"}
+  ],
+  "destination_zones": {
+    "china_hk": {
+      "id": "china_hk",
+      "name": "China & Hong Kong / East Asia (Far East)",
+      "description": "Primary trims, fabric swatches, sample development hub & Kowa Japan (Spreadsheet rates)",
+      "couriers": {
+        "Fardar": {
+          "name": "Fardar Express",
+          "code": "Fardar",
+          "color": "#0ea5e9",
+          "rates": {
+            "first_half": 6.0,
+            "second_half": 2.0,
+            "tier_11_20": 3.5,
+            "tier_21_50": 3.5,
+            "tier_51_100": 3.25,
+            "tier_above_100": 3.0
+          },
+          "fuel_surcharge_percent": 0.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-6 Business Days",
+          "notes": "Best cost for China / East Asia garment samples & trims"
+        },
+        "DPS": {
+          "name": "DPS Logistics",
+          "code": "DPS",
+          "color": "#10b981",
+          "rates": {
+            "first_half": 7.0,
+            "second_half": 2.6,
+            "tier_11_20": 5.3,
+            "tier_21_50": 5.2,
+            "tier_51_100": 5.1,
+            "tier_above_100": 4.95
+          },
+          "fuel_surcharge_percent": 8.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-7 Business Days",
+          "notes": "Economical air express solution"
+        },
+        "Royal": {
+          "name": "Royal Express",
+          "code": "Royal",
+          "color": "#8b5cf6",
+          "rates": {
+            "first_half": 6.25,
+            "second_half": 2.65,
+            "tier_11_20": 5.45,
+            "tier_21_50": 5.3,
+            "tier_51_100": 5.1,
+            "tier_above_100": 5.0
+          },
+          "fuel_surcharge_percent": 8.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-7 Business Days",
+          "notes": "Competitive regional freight and courier"
+        },
+        "UPS": {
+          "name": "UPS Express",
+          "code": "UPS",
+          "color": "#ffb500",
+          "rates": {
+            "first_half": 12.0,
+            "second_half": 4.0,
+            "tier_11_20": 7.0,
+            "tier_21_50": 7.0,
+            "tier_51_100": 6.3,
+            "tier_above_100": 5.7
+          },
+          "fuel_surcharge_percent": 0.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "Ideal for sample parcels and commercial shipments"
+        },
+        "DHL": {
+          "name": "DHL Express",
+          "code": "DHL",
+          "color": "#d40511",
+          "rates": {
+            "first_half": 13.5,
+            "second_half": 4.2,
+            "tier_11_20": 7.5,
+            "tier_21_50": 7.2,
+            "tier_51_100": 6.5,
+            "tier_above_100": 5.8
+          },
+          "fuel_surcharge_percent": 14.5,
+          "handling_fee": 10.0,
+          "transit_days": "2-4 Business Days",
+          "notes": "Fastest global delivery, standard express"
+        },
+        "FedEx": {
+          "name": "FedEx International",
+          "code": "FedEx",
+          "color": "#4d148c",
+          "rates": {
+            "first_half": 12.5,
+            "second_half": 4.1,
+            "tier_11_20": 7.2,
+            "tier_21_50": 7.0,
+            "tier_51_100": 6.4,
+            "tier_above_100": 5.6
+          },
+          "fuel_surcharge_percent": 12.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "Priority express service with tracking"
+        }
+      }
+    },
+    "usa_canada": {
+      "id": "usa_canada",
+      "name": "USA & North America (Target, Carter's)",
+      "description": "Target (USA), Carter's proto fits, size sets & buyer development approvals",
+      "couriers": {
+        "FedEx": {
+          "name": "FedEx International Priority",
+          "code": "FedEx",
+          "color": "#4d148c",
+          "rates": {
+            "first_half": 19.5,
+            "second_half": 5.8,
+            "tier_11_20": 9.5,
+            "tier_21_50": 9.0,
+            "tier_51_100": 8.3,
+            "tier_above_100": 7.5
+          },
+          "fuel_surcharge_percent": 12.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "Fastest priority express to USA buyer headquarters"
+        },
+        "DHL": {
+          "name": "DHL Express Worldwide",
+          "code": "DHL",
+          "color": "#d40511",
+          "rates": {
+            "first_half": 20.5,
+            "second_half": 6.0,
+            "tier_11_20": 9.8,
+            "tier_21_50": 9.2,
+            "tier_51_100": 8.5,
+            "tier_above_100": 7.7
+          },
+          "fuel_surcharge_percent": 14.5,
+          "handling_fee": 10.0,
+          "transit_days": "2-4 Business Days",
+          "notes": "Global door-to-door courier"
+        },
+        "UPS": {
+          "name": "UPS Express Worldwide",
+          "code": "UPS",
+          "color": "#ffb500",
+          "rates": {
+            "first_half": 20.0,
+            "second_half": 5.9,
+            "tier_11_20": 9.6,
+            "tier_21_50": 9.1,
+            "tier_51_100": 8.4,
+            "tier_above_100": 7.6
+          },
+          "fuel_surcharge_percent": 0.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "Direct reliable USA network"
+        }
+      }
+    },
+    "europe_uk": {
+      "id": "europe_uk",
+      "name": "UK & Europe (M&S, Next, Tesco, Mango, John Lewis, etc.)",
+      "description": "UK & Europe fashion retailers (Tesco, M&S, Next, John Lewis, Sainsbury's, Mango, Monoprix, ÏDKIDS)",
+      "couriers": {
+        "DPS": {
+          "name": "DPS Logistics (Europe Air)",
+          "code": "DPS",
+          "color": "#10b981",
+          "rates": {
+            "first_half": 13.5,
+            "second_half": 4.2,
+            "tier_11_20": 7.5,
+            "tier_21_50": 7.0,
+            "tier_51_100": 6.5,
+            "tier_above_100": 5.9
+          },
+          "fuel_surcharge_percent": 8.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-6 Business Days",
+          "notes": "Cost-effective Europe express consolidation"
+        },
+        "DHL": {
+          "name": "DHL Express Europe",
+          "code": "DHL",
+          "color": "#d40511",
+          "rates": {
+            "first_half": 17.5,
+            "second_half": 5.2,
+            "tier_11_20": 8.5,
+            "tier_21_50": 8.0,
+            "tier_51_100": 7.2,
+            "tier_above_100": 6.5
+          },
+          "fuel_surcharge_percent": 14.5,
+          "handling_fee": 10.0,
+          "transit_days": "2-4 Business Days",
+          "notes": "Preferred by UK & European buyer sampling desks"
+        },
+        "FedEx": {
+          "name": "FedEx International Priority",
+          "code": "FedEx",
+          "color": "#4d148c",
+          "rates": {
+            "first_half": 16.5,
+            "second_half": 4.9,
+            "tier_11_20": 8.2,
+            "tier_21_50": 7.8,
+            "tier_51_100": 7.0,
+            "tier_above_100": 6.3
+          },
+          "fuel_surcharge_percent": 12.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "Comprehensive Europe air network"
+        },
+        "UPS": {
+          "name": "UPS Express Saver",
+          "code": "UPS",
+          "color": "#ffb500",
+          "rates": {
+            "first_half": 17.0,
+            "second_half": 5.0,
+            "tier_11_20": 8.4,
+            "tier_21_50": 7.9,
+            "tier_51_100": 7.1,
+            "tier_above_100": 6.4
+          },
+          "fuel_surcharge_percent": 0.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "UPS European express services"
+        }
+      }
+    },
+    "australia_oceania": {
+      "id": "australia_oceania",
+      "name": "Australia & Oceania (Kmart, Big W, Myer)",
+      "description": "Australian department stores & brands (Kmart Australia, Big W, Myer)",
+      "couriers": {
+        "FedEx": {
+          "name": "FedEx International Priority (Australia)",
+          "code": "FedEx",
+          "color": "#4d148c",
+          "rates": {
+            "first_half": 18.5,
+            "second_half": 5.4,
+            "tier_11_20": 8.8,
+            "tier_21_50": 8.2,
+            "tier_51_100": 7.5,
+            "tier_above_100": 6.8
+          },
+          "fuel_surcharge_percent": 12.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-6 Business Days",
+          "notes": "Direct Australia air express with customs clearance"
+        },
+        "DHL": {
+          "name": "DHL Express Australia",
+          "code": "DHL",
+          "color": "#d40511",
+          "rates": {
+            "first_half": 19.5,
+            "second_half": 5.6,
+            "tier_11_20": 9.0,
+            "tier_21_50": 8.5,
+            "tier_51_100": 7.8,
+            "tier_above_100": 7.0
+          },
+          "fuel_surcharge_percent": 14.5,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "Fastest transit to Melbourne & Sydney buyer offices"
+        },
+        "UPS": {
+          "name": "UPS Worldwide Express",
+          "code": "UPS",
+          "color": "#ffb500",
+          "rates": {
+            "first_half": 19.0,
+            "second_half": 5.5,
+            "tier_11_20": 8.9,
+            "tier_21_50": 8.3,
+            "tier_51_100": 7.6,
+            "tier_above_100": 6.9
+          },
+          "fuel_surcharge_percent": 0.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-6 Business Days",
+          "notes": "Reliable Australian Pacific courier"
+        }
+      }
+    },
+    "south_asia_middle_east": {
+      "id": "south_asia_middle_east",
+      "name": "Middle East & Turkey (LC Waikiki, Max, Babyshop)",
+      "description": "LC Waikiki (Turkey), Max Fashion & Babyshop (Landmark Group, UAE), India",
+      "couriers": {
+        "DPS": {
+          "name": "DPS Logistics",
+          "code": "DPS",
+          "color": "#10b981",
+          "rates": {
+            "first_half": 8.5,
+            "second_half": 2.9,
+            "tier_11_20": 5.8,
+            "tier_21_50": 5.4,
+            "tier_51_100": 5.0,
+            "tier_above_100": 4.6
+          },
+          "fuel_surcharge_percent": 8.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-5 Business Days",
+          "notes": "Direct regional courier"
+        },
+        "Royal": {
+          "name": "Royal Express",
+          "code": "Royal",
+          "color": "#8b5cf6",
+          "rates": {
+            "first_half": 8.0,
+            "second_half": 2.8,
+            "tier_11_20": 5.6,
+            "tier_21_50": 5.2,
+            "tier_51_100": 4.9,
+            "tier_above_100": 4.5
+          },
+          "fuel_surcharge_percent": 8.0,
+          "handling_fee": 10.0,
+          "transit_days": "3-6 Business Days",
+          "notes": "Economical regional tariff"
+        },
+        "DHL": {
+          "name": "DHL Express Regional",
+          "code": "DHL",
+          "color": "#d40511",
+          "rates": {
+            "first_half": 14.5,
+            "second_half": 4.3,
+            "tier_11_20": 7.3,
+            "tier_21_50": 6.9,
+            "tier_51_100": 6.3,
+            "tier_above_100": 5.6
+          },
+          "fuel_surcharge_percent": 14.5,
+          "handling_fee": 10.0,
+          "transit_days": "2-3 Business Days",
+          "notes": "Next-day to 3-day express to Dubai & Istanbul"
+        },
+        "FedEx": {
+          "name": "FedEx Regional",
+          "code": "FedEx",
+          "color": "#4d148c",
+          "rates": {
+            "first_half": 13.8,
+            "second_half": 4.1,
+            "tier_11_20": 7.0,
+            "tier_21_50": 6.6,
+            "tier_51_100": 6.0,
+            "tier_above_100": 5.3
+          },
+          "fuel_surcharge_percent": 12.0,
+          "handling_fee": 10.0,
+          "transit_days": "2-4 Business Days",
+          "notes": "Reliable Middle East & Turkey service"
+        }
+      }
+    },
+    "rest_of_world": {
+      "id": "rest_of_world",
+      "name": "Rest of the World (Other)",
+      "description": "Latin America, Africa & Global other routes",
+      "couriers": {
+        "DHL": {
+          "name": "DHL Express Worldwide",
+          "code": "DHL",
+          "color": "#d40511",
+          "rates": {
+            "first_half": 23.5,
+            "second_half": 6.8,
+            "tier_11_20": 11.2,
+            "tier_21_50": 10.5,
+            "tier_51_100": 9.5,
+            "tier_above_100": 8.7
+          },
+          "fuel_surcharge_percent": 14.5,
+          "handling_fee": 10.0,
+          "transit_days": "3-6 Business Days",
+          "notes": "Global international coverage"
+        },
+        "FedEx": {
+          "name": "FedEx International Priority",
+          "code": "FedEx",
+          "color": "#4d148c",
+          "rates": {
+            "first_half": 22.5,
+            "second_half": 6.5,
+            "tier_11_20": 10.8,
+            "tier_21_50": 10.2,
+            "tier_51_100": 9.2,
+            "tier_above_100": 8.4
+          },
+          "fuel_surcharge_percent": 12.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-6 Business Days",
+          "notes": "Worldwide air express"
+        },
+        "UPS": {
+          "name": "UPS Worldwide Express",
+          "code": "UPS",
+          "color": "#ffb500",
+          "rates": {
+            "first_half": 23.0,
+            "second_half": 6.6,
+            "tier_11_20": 11.0,
+            "tier_21_50": 10.4,
+            "tier_51_100": 9.4,
+            "tier_above_100": 8.5
+          },
+          "fuel_surcharge_percent": 0.0,
+          "handling_fee": 10.0,
+          "transit_days": "4-6 Business Days",
+          "notes": "Global door delivery"
+        }
+      }
+    }
+  }
+}
