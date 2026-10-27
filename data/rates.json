@@ -9,7 +9,7 @@
     "default_handling_fee": 10.0,
     "apply_fuel_surcharge": true,
     "default_origin": "China (Guangzhou / Shanghai / Ningbo)",
-    "default_destination": "Gazipur, Bangladesh (Aman Graphics & Designs Ltd - Factory)",
+    "default_destination": "Nazimnagar, Singair Road, Hemayetpur, Savar, Dhaka 1340.",
     "default_zone": "china_hk"
   },
   "buyers_catalog": [
@@ -185,15 +185,62 @@
     }
   ],
   "origins_catalog": [
-    {"country": "China", "city": "Guangzhou / Shanghai / Ningbo", "flag": "🇨🇳", "zone": "china_hk", "label": "China"},
-    {"country": "Hong Kong", "city": "Hong Kong SAR", "flag": "🇭🇰", "zone": "china_hk", "label": "Hong Kong"},
-    {"country": "India", "city": "Delhi / Mumbai / Surat", "flag": "🇮🇳", "zone": "south_asia_middle_east", "label": "India"},
-    {"country": "Taiwan", "city": "Taipei", "flag": "🇹🇼", "zone": "china_hk", "label": "Taiwan"},
-    {"country": "Vietnam", "city": "Hanoi / HCMC", "flag": "🇻🇳", "zone": "china_hk", "label": "Vietnam"},
-    {"country": "Turkey", "city": "Istanbul", "flag": "🇹🇷", "zone": "south_asia_middle_east", "label": "Turkey"},
-    {"country": "BD Factory", "city": "Gazipur (Aman Graphics & Designs Ltd)", "flag": "🏭", "zone": "china_hk", "label": "BD Factory"},
-    {"country": "BD HO", "city": "Dhaka (Aman Graphics & Designs Ltd)", "flag": "🏢", "zone": "china_hk", "label": "BD HO"},
-    {"country": "Other", "city": "Custom Origin", "flag": "🌏", "zone": "rest_of_world", "label": "Other"}
+    {
+      "country": "China",
+      "city": "Guangzhou / Shanghai / Ningbo",
+      "flag": "🇨🇳",
+      "zone": "china_hk",
+      "label": "China"
+    },
+    {
+      "country": "Hong Kong",
+      "city": "Hong Kong SAR",
+      "flag": "🇭🇰",
+      "zone": "china_hk",
+      "label": "Hong Kong"
+    },
+    {
+      "country": "India",
+      "city": "Delhi / Mumbai / Surat",
+      "flag": "🇮🇳",
+      "zone": "south_asia_middle_east",
+      "label": "India"
+    },
+    {
+      "country": "Taiwan",
+      "city": "Taipei",
+      "flag": "🇹🇼",
+      "zone": "china_hk",
+      "label": "Taiwan"
+    },
+    {
+      "country": "Vietnam",
+      "city": "Hanoi / HCMC",
+      "flag": "🇻🇳",
+      "zone": "china_hk",
+      "label": "Vietnam"
+    },
+    {
+      "country": "Turkey",
+      "city": "Istanbul",
+      "flag": "🇹🇷",
+      "zone": "south_asia_middle_east",
+      "label": "Turkey"
+    },
+    {
+      "country": "BD HO",
+      "city": "Nazimnagar, Singair Road, Hemayetpur, Savar, Dhaka 1340.",
+      "flag": "🏢",
+      "zone": "china_hk",
+      "label": "BD HO"
+    },
+    {
+      "country": "Other",
+      "city": "Custom Origin",
+      "flag": "🌏",
+      "zone": "rest_of_world",
+      "label": "Other"
+    }
   ],
   "destination_zones": {
     "china_hk": {
