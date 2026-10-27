@@ -27,6 +27,7 @@
     }
   </script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
@@ -140,10 +141,7 @@
               <button type="button" onclick="selectOrigin('Turkey', 'Istanbul', 'south_asia_middle_east')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
                 <span>🇹🇷</span> Turkey
               </button>
-              <button type="button" onclick="selectOrigin('BD Factory', 'Gazipur (Aman Graphics & Designs Ltd)', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
-                <span>🏭</span> BD Factory
-              </button>
-              <button type="button" onclick="selectOrigin('BD HO', 'Dhaka (Aman Graphics & Designs Ltd)', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+              <button type="button" onclick="selectOrigin('BD HO', 'Nazimnagar, Singair Road, Hemayetpur, Savar, Dhaka 1340.', 'china_hk')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700" title="Aman Graphics & Designs Ltd. Head Office">
                 <span>🏢</span> BD HO
               </button>
               <button type="button" onclick="selectOrigin('Other', 'Custom Origin Address', 'rest_of_world')" class="origin-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
@@ -176,7 +174,7 @@
               <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
                 <i class="fa-solid fa-plane-arrival text-rose-600"></i> Destination (To Location)
               </label>
-              <span class="text-[10px] text-slate-400 font-medium" id="destRoleLabel">Factory Consignee</span>
+              <span class="text-[10px] text-slate-400 font-medium" id="destRoleLabel">Consignee (BD HO)</span>
             </div>
 
             <!-- BUYER ACCOUNTS PRESETS SECTION -->
@@ -257,10 +255,7 @@
 
             <!-- Destination Quick Preset Country Pills -->
             <div class="flex flex-wrap gap-1.5" id="destinationQuickPills">
-              <button type="button" onclick="selectDestination('BD Factory', 'Gazipur (Aman Graphics & Designs Ltd)', 'china_hk')" class="dest-pill active text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-blue-600 text-white border-blue-600">
-                <span>🏭</span> BD Factory
-              </button>
-              <button type="button" onclick="selectDestination('BD HO', 'Dhaka (Aman Graphics & Designs Ltd)', 'china_hk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
+              <button type="button" onclick="selectDestination('BD HO', 'Nazimnagar, Singair Road, Hemayetpur, Savar, Dhaka 1340.', 'china_hk')" class="dest-pill active text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-blue-600 text-white border-blue-600" title="Aman Graphics & Designs Ltd. Head Office">
                 <span>🏢</span> BD HO
               </button>
               <button type="button" onclick="selectDestination('China', 'Guangzhou / Shanghai / Ningbo', 'china_hk')" class="dest-pill text-xs px-2.5 py-1 rounded-lg border font-semibold transition flex items-center gap-1 bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-700">
@@ -294,9 +289,9 @@
 
             <!-- Destination Text Details Input -->
             <div class="relative">
-              <input type="text" id="inputDestination" value="Gazipur, Bangladesh (Aman Graphics & Designs Ltd - Factory)"
+              <input type="text" id="inputDestination" value="Nazimnagar, Singair Road, Hemayetpur, Savar, Dhaka 1340."
                 class="w-full text-xs font-bold text-slate-900 bg-slate-50 border border-slate-200 focus:border-blue-500 focus:bg-white rounded-xl px-3.5 py-2.5 outline-none transition"
-                placeholder="Destination city, factory address or buyer consignee..."
+                placeholder="Destination city, HO address or buyer consignee..."
                 oninput="triggerCalculation()">
             </div>
 
